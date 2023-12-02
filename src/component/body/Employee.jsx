@@ -1,5 +1,5 @@
 import React from "react";
-import {data, male, female} from "./EmployeeData";
+import {male, female} from "./EmployeeData";
 
 function Employee({employee, handleEmployeeCardClick, selectedTeam}) {
   return (

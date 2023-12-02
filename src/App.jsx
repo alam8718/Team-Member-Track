@@ -4,9 +4,7 @@ import Content from "./component/body/Content";
 function App() {
   return (
     <>
-      <Navbar />
-      <Content />
-      {/* <Fotter /> */}
+      
     </>
   );
 }

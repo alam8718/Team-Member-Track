@@ -1,9 +1,15 @@
-import React, {useState} from "react";
-import {data, male, female} from "./EmployeeData";
+import React, {useEffect, useState} from "react";
+import {data} from "./EmployeeData";
 import Employee from "./Employee";
+import Header from "./Header";
+
 function Content() {
-  const [employees, setEmployees] = useState(data);
-  const [selectedTeam, setSelectedTeam] = useState("TeamA");
+  const [employees, setEmployees] = useState(
+    JSON.parse(localStorage.getItem("employeeList")) || data
+  );
+  const [selectedTeam, setSelectedTeam] = useState(
+    JSON.parse(localStorage.getItem("teamMemberList")) || "TeamA"
+  );
 
   const handleTeamChange = (e) => {
     setSelectedTeam(e.target.value);
@@ -21,20 +27,25 @@ function Content() {
       )
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem("employeeList", JSON.stringify(employees));
+  }, [employees]);
+
+  useEffect(() => {
+    localStorage.setItem("teamMemberList", JSON.stringify(selectedTeam));
+  }, [selectedTeam]);
+
   return (
     <>
-      <div className="flex justify-center my-10 ">
-        <select
-          name="teams name"
-          className="px-8 py-2 bg-gray-200 rounded-lg "
-          onChange={handleTeamChange}
-          value={selectedTeam}>
-          <option value="TeamA">Team A</option>
-          <option value="TeamB">Team B</option>
-          <option value="TeamC">Team C</option>
-          <option value="TeamD">Team D</option>
-        </select>
-      </div>
+      <Header
+        handleTeamChange={handleTeamChange}
+        selectedTeam={selectedTeam}
+        teamMember={
+          employees.filter((employee) => employee.teamName === selectedTeam)
+            .length
+        }
+      />
       <div className="my-10 container mx-auto grid grid-cols-2 lg:grid-cols-3 gap-6">
         {employees.map((employee) => (
           <Employee
